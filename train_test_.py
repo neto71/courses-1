@@ -12,6 +12,7 @@ def main():
 	redux_dir = os.path.join(data_dir,"dogs-vs-cats-redux")
 	train_dir = os.path.join(redux_dir,"train")
 	test_dir = os.path.join(redux_dir,"test")
+	test_dir_1=os.path.join(test_dir,"unknown")
 	validate_dir = os.path.join(redux_dir,"validate")
 	sample_dir = os.path.join(redux_dir,"sample")
 		
@@ -25,6 +26,9 @@ def main():
 		os.makedirs(train_dir)	
 	if not os.path.exists(test_dir):
 		os.makedirs(test_dir)	
+	if not os.path.exists(test_dir_1):
+		os.makedirs(test_dir_1)		
+		
 	if not os.path.exists(validate_dir):
 		os.makedirs(validate_dir)	
 	if not os.path.exists(sample_dir):
@@ -36,6 +40,13 @@ def main():
 #unzip files onto test folder
 	with zipfile.ZipFile(os.path.join(data_dir,'test.zip'), "r") as z:
 		z.extractall(redux_dir)
+	
+	test_files=glob.glob(test_dir+'/*.*')
+	for files in test_files:
+		shutil.copy2(files,test_dir_1)
+		os.remove(files)
+	
+	
 	# create and split between dogs and cats under train folder
 	separate_cats_dogs(train_dir)
 	# create validation sctructure
